@@ -2,8 +2,19 @@ name: Benchmark
 
 on:
   push:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
   pull_request:
+    branches:
+      - main
+    paths-ignore:
+      - README.md
   workflow_dispatch:
+
+permissions:
+  contents: write
 
 jobs:
   benchmark:
@@ -11,6 +22,8 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
@@ -75,5 +88,18 @@ jobs:
 
           mv "$tmp_readme" README.md
 
-          echo "Updated README benchmark block:"
-          sed -n '/<!-- benchmark:start -->/,/<!-- benchmark:end -->/p' README.md
+      - name: Commit and push README update
+        if: github.event_name != 'pull_request'
+        run: |
+          set -euo pipefail
+
+          if git diff --quiet -- README.md; then
+            echo "README.md is unchanged"
+            exit 0
+          fi
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add README.md
+          git commit -m "update benchmark results"
+          git push
