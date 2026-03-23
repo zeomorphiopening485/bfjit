@@ -16,24 +16,13 @@ jobs:
         shell: bash
         run: |
           sudo apt-get update
-          sudo apt-get install -y build-essential cmake wget gpg ca-certificates
+          sudo apt-get install -y cmake wget
 
-          sudo install -d -m 0755 /etc/apt/keyrings
-
-          wget -qO- https://apt.llvm.org/llvm-snapshot.gpg.key \
-            | gpg --dearmor \
-            | sudo tee /etc/apt/keyrings/llvm.gpg >/dev/null
-
-          echo "deb [signed-by=/etc/apt/keyrings/llvm.gpg] http://apt.llvm.org/noble/ llvm-toolchain-noble main" \
-            | sudo tee /etc/apt/sources.list.d/llvm.list >/dev/null
+          wget https://apt.llvm.org/llvm.sh
+          chmod +x llvm.sh
+          sudo ./llvm.sh 22
 
           sudo apt-get update
-          sudo apt-get install -y \
-            llvm-22 llvm-22-dev llvm-22-runtime \
-            clang-22 clang-tools-22 clangd-22 clang-tidy-22 clang-format-22 \
-            lld-22 lldb-22 \
-            libc++-22-dev libc++abi-22-dev \
-            libomp-22-dev
 
           wget https://github.com/sharkdp/hyperfine/releases/download/v1.20.0/hyperfine_1.20.0_amd64.deb
           sudo dpkg -i hyperfine_1.20.0_amd64.deb
