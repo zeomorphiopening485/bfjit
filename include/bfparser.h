@@ -9,14 +9,18 @@
 typedef enum bf_ir_kind {
     BF_IR_ADD_PTR = 0,
     BF_IR_ADD_DATA,
+    BF_IR_ADD_DATA_OFFSET,
     BF_IR_INPUT,
     BF_IR_OUTPUT,
     BF_IR_LOOP,
+    BF_IR_IF,
     BF_IR_SET_ZERO,
     BF_IR_SET_CONST,
+    BF_IR_SET_CONST_OFFSET,
     BF_IR_MULTI_ZERO,
     BF_IR_SCAN,
-    BF_IR_MULTIPLY_LOOP
+    BF_IR_MULTIPLY_LOOP,
+    BF_IR_NONNULL_MULTIPLY_LOOP
 } bf_ir_kind;
 
 typedef struct bf_multiply_term {
@@ -36,6 +40,7 @@ struct bf_ir_node {
     bf_ir_kind kind;
     bf_src_loc loc;
     int arg;
+    int offset;
     bf_ir_block body;
     bf_multiply_term *terms;
     size_t term_count;

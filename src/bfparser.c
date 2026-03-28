@@ -49,10 +49,12 @@ void bf_ir_block_dispose(bf_ir_block *block) {
     size_t index;
 
     for (index = 0; index < block->count; ++index) {
-        if (block->nodes[index].kind == BF_IR_LOOP) {
+        if (block->nodes[index].kind == BF_IR_LOOP ||
+            block->nodes[index].kind == BF_IR_IF) {
             bf_ir_block_dispose(&block->nodes[index].body);
         }
         if (block->nodes[index].kind == BF_IR_MULTIPLY_LOOP ||
+            block->nodes[index].kind == BF_IR_NONNULL_MULTIPLY_LOOP ||
             block->nodes[index].kind == BF_IR_MULTI_ZERO) {
             free(block->nodes[index].terms);
         }
@@ -127,6 +129,7 @@ static int bf_ir_block_append_delta(bf_ir_block *block, bf_ir_kind kind,
     node.kind = kind;
     node.loc = loc;
     node.arg = delta;
+    node.offset = 0;
     bf_ir_block_reset(&node.body);
     node.terms = NULL;
     node.term_count = 0;
@@ -184,6 +187,7 @@ static int bf_parse_block(bf_parser *parser, bf_ir_block *block,
             node.kind = BF_IR_OUTPUT;
             node.loc = token.loc;
             node.arg = 0;
+            node.offset = 0;
             bf_ir_block_reset(&node.body);
             node.terms = NULL;
             node.term_count = 0;
@@ -199,6 +203,7 @@ static int bf_parse_block(bf_parser *parser, bf_ir_block *block,
             node.kind = BF_IR_INPUT;
             node.loc = token.loc;
             node.arg = 0;
+            node.offset = 0;
             bf_ir_block_reset(&node.body);
             node.terms = NULL;
             node.term_count = 0;
@@ -214,6 +219,7 @@ static int bf_parse_block(bf_parser *parser, bf_ir_block *block,
             node.kind = BF_IR_LOOP;
             node.loc = token.loc;
             node.arg = 0;
+            node.offset = 0;
             bf_ir_block_reset(&node.body);
             node.terms = NULL;
             node.term_count = 0;
@@ -290,22 +296,30 @@ const char *bf_ir_kind_name(bf_ir_kind kind) {
         return "add_ptr";
     case BF_IR_ADD_DATA:
         return "add_data";
+    case BF_IR_ADD_DATA_OFFSET:
+        return "add_data_offset";
     case BF_IR_INPUT:
         return "input";
     case BF_IR_OUTPUT:
         return "output";
     case BF_IR_LOOP:
         return "loop";
+    case BF_IR_IF:
+        return "if";
     case BF_IR_SET_ZERO:
         return "set_zero";
     case BF_IR_SET_CONST:
         return "set_const";
+    case BF_IR_SET_CONST_OFFSET:
+        return "set_const_offset";
     case BF_IR_MULTI_ZERO:
         return "multi_zero";
     case BF_IR_SCAN:
         return "scan";
     case BF_IR_MULTIPLY_LOOP:
         return "multiply_loop";
+    case BF_IR_NONNULL_MULTIPLY_LOOP:
+        return "nonnull_multiply_loop";
     default:
         return "unknown";
     }

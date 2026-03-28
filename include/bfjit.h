@@ -14,5 +14,7 @@ typedef struct bf_jit_err {
 
 bool bf_jit_execute_program(const bf_program *program, uint8_t *tape,
                             size_t tape_size, bf_jit_err *err);
+bool bf_jit_dump_program_code(const bf_program *program,
+                              const char *output_path, bf_jit_err *err);
 
 #endif // BFJIT_H

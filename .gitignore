@@ -1,5 +1,8 @@
 .cache/
 build/
+build-x86/
+build-aarch64/
 build-test/
+refs/
 .DS_Store
 Thumbs.db
